@@ -21,13 +21,7 @@ const itemsSchema = new mongoose.Schema({
 const Item = mongoose.model("Item", itemsSchema);
 
 const item1 = new Item({
-  name: "Learning",
-});
-const item2 = new Item({
-  name: "Gisting",
-});
-const item3 = new Item({
-  name: "Relaxing",
+  name: "Welcome to new List",
 });
 
 const listSchema = new mongoose.Schema({
@@ -37,7 +31,7 @@ const listSchema = new mongoose.Schema({
 
 const List = mongoose.model("List", listSchema);
 
-const defaultItems = [item1, item2, item3];
+const defaultItems = [item1];
 
 app.get("/", function (req, res) {
   async function findItems() {
@@ -69,7 +63,6 @@ app.get("/:listGroup", function (req, res) {
   List.findOne({ name: customListName })
     .then((foundList) => {
       if (foundList != null) {
-        // console.log(`the IF block ran ${foundList}`);
         res.render("list", {
           listTitle: foundList.name,
           newListItems: foundList.items,
@@ -81,7 +74,6 @@ app.get("/:listGroup", function (req, res) {
         });
         list.save();
         res.redirect(`/${customListName}`);
-        // console.log(`New document was added (else block) ${foundList}`);
       }
     })
     .catch((error) => {
@@ -92,7 +84,6 @@ app.get("/:listGroup", function (req, res) {
 app.post("/", function (req, res) {
   const itemName = req.body.newItem;
   const listName = req.body.list;
-  console.log(`the value of listName is ${listName}`);
   const item = new Item({
     name: itemName,
   });
